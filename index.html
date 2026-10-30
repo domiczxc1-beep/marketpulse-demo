@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MARKETPULSE — Automated Price Monitoring & Excel Reporting</title>
+  <!-- Google Fonts: Inter & JetBrains Mono для табличных чисел -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      /* Цветовая палитра (Fintech / Linear / Clean SaaS) */
+      --bg-body: #f4f6f9;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-sidebar: #0b0f19;
+      --bg-sidebar-hover: #161f33;
+      --bg-sidebar-active: #1e293b;
+
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --text-sidebar: #94a3b8;
+      --text-sidebar-active: #ffffff;
+
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --success-text: #065f46;
+
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+      --warning-text: #92400e;
+
+      --border-color: #e2e8f0;
+      --border-subtle: #f1f5f9;
+
+      /* Размеры и отступы */
+      --sidebar-width: 260px;
+      --header-height: 72px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+
+      /* Тени */
+      --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+      --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.05);
+
+      /* Типографика */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================
+       SIDEBAR (Боковая навигация)
+       ========================================== */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-sidebar);
+      color: var(--text-sidebar);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      user-select: none;
+    }
+
+    .sidebar-brand {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-version {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .sidebar-nav {
+      padding: 20px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #475569;
+      padding: 8px 12px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-sidebar);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .nav-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item i {
+      width: 18px;
+      text-align: center;
+      font-size: 15px;
+      transition: var(--transition);
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-sidebar-hover);
+      color: #e2e8f0;
+    }
+
+    .nav-item.active {
+      background-color: var(--bg-sidebar-active);
+      color: var(--text-sidebar-active);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .nav-item.active i {
+      color: #3b82f6;
+    }
+
+    .nav-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .nav-badge.alert {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .sidebar-status {
+      margin: 12px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--success);
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .status-meta {
+      color: #64748b;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    /* ==========================================
+       MAIN CONTENT AREA & HEADER
+       ========================================== */
+    .main-wrapper {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .top-header {
+      height: var(--header-height);
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .header-titles h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-titles p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background-color: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .demo-badge i {
+      color: var(--warning);
+    }
+
+    .sync-timestamp {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-subtle);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 14px;
+      border-left: 1px solid var(--border-color);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================
+       WORKSPACE & TOOLBAR
+       ========================================== */
+    .workspace {
+      padding: 28px 32px;
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      background: var(--bg-surface);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .category-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 13px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-sans);
+    }
+
+    .pill-btn:hover {
+      border-color: #cbd5e1;
+      color: var(--text-main);
+    }
+
+    .pill-btn.active {
+      background: var(--text-main);
+      color: #ffffff;
+      border-color: var(--text-main);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      background-color: var(--bg-surface);
+      border-color: var(--border-color);
+      color: var(--text-main);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background-color: var(--bg-subtle);
+      border-color: #cbd5e1;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 1px 2px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-excel {
+      background-color: #059669;
+      color: #ffffff;
+    }
+
+    .btn-excel:hover:not(:disabled) {
+      background-color: #047857;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================
+       KPI CARDS (Блок ключевых метрик)
+       ========================================== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-xs);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .kpi-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .kpi-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .kpi-icon.blue { background: var(--primary-light); color: var(--primary); }
+    .kpi-icon.green { background: var(--success-bg); color: var(--success); }
+    .kpi-icon.amber { background: var(--warning-bg); color: var(--warning); }
+    .kpi-icon.purple { background: #f3e8ff; color: #7e22ce; }
+
+    .kpi-value {
+      font-family: var(--font-mono);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .kpi-footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .trend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .trend-up { background: var(--success-bg); color: var(--success-text); }
+    .trend-down { background: var(--danger-bg); color: var(--danger-text); }
+    .trend-neutral { background: var(--bg-subtle); color: var(--text-secondary); }
+
+    /* ==========================================
+       ANALYTICAL ZONE (Chart & Table)
+       ========================================== */
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .card-title-group h2 {
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title-group p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .chart-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-container {
+      padding: 20px 24px;
+      height: 340px;
+      position: relative;
+    }
+
+    /* Таблица сравнения цен */
+    .table-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .search-input {
+      padding: 7px 12px 7px 34px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font-sans);
+      width: 240px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .select-filter {
+      padding: 7px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: var(--font-sans);
+      color: var(--text-main);
+      background: var(--bg-surface);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      background-color: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr {
+      transition: var(--transition);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .sku-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .product-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .price-val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 13.5px;
+      color: var(--text-main);
+    }
+
+    .our-price-col {
+      background-color: rgba(37, 99, 235, 0.03);
+      border-left: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .comp-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    /* Зеленый — наша цена дешевле конкурента (выгодно нам). Красный — наша цена дороже (риск потери продаж) */
+    .diff-favorable {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+
+    .diff-expensive {
+      background-color: var(--danger-bg);
+      color: var(--danger-text);
+      border: 1px solid var(--danger-border);
+    }
+
+    .diff-equal {
+      background-color: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .status-optimal { background: var(--success-bg); color: var(--success-text); }
+    .status-risk { background: var(--danger-bg); color: var(--danger-text); }
+    .status-watch { background: var(--warning-bg); color: var(--warning-text); }
+
+    /* ==========================================
+       SECONDARY VIEWS (Вкладки Сайдбара)
+       ========================================== */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .competitor-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .comp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .comp-domain {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comp-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12px;
+    }
+
+    .comp-stat-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .comp-stat-item strong {
+      font-family: var(--font-mono);
+      color: var(--text-main);
+      font-size: 13px;
+    }
+
+    /* Telegram Bot Preview */
+    .tg-preview-box {
+      background: #0e1621;
+      color: #f5f5f5;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      font-size: 13px;
+      border: 1px solid #1e2c3a;
+    }
+
+    .tg-message {
+      background: #182533;
+      border-radius: 12px 12px 12px 2px;
+      padding: 14px 16px;
+      max-width: 480px;
+      border-left: 3px solid #3b82f6;
+      line-height: 1.55;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .tg-msg-header {
+      color: #60a5fa;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tg-code {
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #93c5fd;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .switch-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      background: #cbd5e1;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .toggle-switch.active {
+      background: var(--primary);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: 0.2s;
+    }
+
+    .toggle-switch.active::after {
+      left: 21px;
+    }
+
+    /* ==========================================
+       CTA BANNER / FOOTER (Обязательный блок)
+       ========================================== */
+    .cta-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 12px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+      top: -120px;
+      right: -80px;
+      pointer-events: none;
+    }
+
+    .cta-content {
+      max-width: 760px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      color: #93c5fd;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .cta-text {
+      font-size: 14.5px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    .cta-text strong {
+      color: #ffffff;
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-primary {
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 11px 20px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-cta-primary:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .btn-cta-tg {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 11px 18px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-cta-tg:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    /* ==========================================
+       TOAST NOTIFICATIONS & MODAL
+       ========================================== */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+    }
+
+    .toast {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      border-left: 4px solid var(--primary);
+      animation: slideInRight 0.25s ease forwards;
+    }
+
+    .toast.success { border-left-color: var(--success); }
+    .toast.warning { border-left-color: var(--warning); }
+
+    .toast-icon {
+      font-size: 16px;
+      margin-top: 2px;
+    }
+
+    .toast.success .toast-icon { color: var(--success); }
+    .toast.warning .toast-icon { color: var(--warning); }
+    .toast.info .toast-icon { color: #60a5fa; }
+
+    .toast-body strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .toast-body span {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Модальное окно заказа */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      max-width: 500px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 1200px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .cta-banner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 72px; }
+      .brand-text, .nav-item span, .nav-badge, .nav-section-label, .sidebar-status { display: none; }
+      .main-wrapper { margin-left: 72px; }
+      .sidebar-brand { justify-content: center; padding: 0; }
+      .nav-item { justify-content: center; padding: 12px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .top-header { padding: 0 16px; }
+      .workspace { padding: 16px; }
+      .sync-timestamp, .user-info { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       1. САЙДБАР (Навигация)
+       ========================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">
+          MARKETPULSE <span class="brand-version">v2.4</span>
+        </div>
+        <div class="brand-sub">Price Intelligence SaaS</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Аналитика</div>
+      <a class="nav-item active" data-tab="dashboard">
+        <div class="nav-item-left">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Дашборд</span>
+        </div>
+      </a>
+      <a class="nav-item" data-tab="products">
+        <div class="nav-item-left">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Товары</span>
+        </div>
+        <span class="nav-badge" id="sidebarSkuCount">1,428</span>
+      </a>
+      <a class="nav-item" data-tab="competitors">
+        <div class="nav-item-left">
+          <i class="fa-solid fa-spider"></i>
+          <span>Конкуренты</span>
+        </div>
+        <span class="nav-badge">4</span>
+      </a>
+
+      <div class="nav-section-label" style="margin-top: 12px;">Автоматизация</div>
+      <a class="nav-item" data-tab="reports">
+        <div class="nav-item-left">
+          <i class="fa-solid fa-file-excel"></i>
+          <span>Excel-отчеты</span>
+        </div>
+      </a>
+      <a class="nav-item" data-tab="alerts">
+        <div class="nav-item-left">
+          <i class="fa-brands fa-telegram"></i>
+          <span>Telegram-алерты</span>
+        </div>
+        <span class="nav-badge alert" id="sidebarAlertCount">5</span>
+      </a>
+      <a class="nav-item" data-tab="settings">
+        <div class="nav-item-left">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Настройки</span>
+        </div>
+      </a>
+    </nav>
+
+    <div class="sidebar-status">
+      <div class="status-header">
+        <span>Парсинг-кластер</span>
+        <span class="pulse-dot"></span>
+      </div>
+      <div class="status-meta">
+        <span>Прокси пул: 48 IPv4 (RU/KZ)</span>
+        <span>Uptime: 99.94% • Playwright</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       ОСНОВНОЙ КОНТЕНТ
+       ========================================== -->
+  <div class="main-wrapper">
+
+    <!-- 2. ШАПКА (Header) -->
+    <header class="top-header">
+      <div class="header-titles">
+        <h1>MARKETPULSE</h1>
+        <p>Automated Price Monitoring &amp; Excel Reporting</p>
+      </div>
+
+      <div class="header-right">
+        <div class="sync-timestamp">
+          <i class="fa-regular fa-clock"></i>
+          <span>Обновлено: <strong id="lastSyncTime">Сегодня, 14:30</strong></span>
+        </div>
+
+        <div class="demo-badge" title="Все данные сгенерированы для демонстрации возможностей системы">
+          <i class="fa-solid fa-flask"></i>
+          <span>DEMO MODE (Тестовые данные)</span>
+        </div>
+
+        <div class="user-profile" onclick="showToast('info', 'Профиль аналитика', 'Вы находитесь в демонстрационном аккаунте Senior Price Analyst.')">
+          <div class="avatar">МП</div>
+          <div class="user-info">
+            <span class="user-name">Отдел закупок</span>
+            <span class="user-role">Enterprise Plan</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- РАБОЧАЯ ОБЛАСТЬ -->
+    <main class="workspace">
+
+      <!-- 5. ПАНЕЛЬ ДЕЙСТВИЙ (Toolbar) -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <span class="toolbar-label">
+            <i class="fa-solid fa-layer-group"></i> Категория:
+          </span>
+          <div class="category-pills" id="categoryFilterBar">
+            <button class="pill-btn active" data-category="all">Все категории</button>
+            <button class="pill-btn" data-category="smartphones">Смартфоны</button>
+            <button class="pill-btn" data-category="laptops">Ноутбуки</button>
+            <button class="pill-btn" data-category="components">Комплектующие</button>
+          </div>
+        </div>
+
+        <div class="toolbar-actions">
+          <input type="file" id="hiddenFileInput" accept=".xlsx,.xls,.csv" style="display: none;" />
+          <button class="btn btn-outline" id="btnImport">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>Импорт Excel/CSV</span>
+          </button>
+          <button class="btn btn-primary" id="btnRunCheck">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Запустить проверку цен</span>
+          </button>
+          <button class="btn btn-excel" id="btnExport">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>Экспорт в Excel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 1: ДАШБОРД (Основная)
+           ========================================== -->
+      <div class="tab-pane active" id="tab-dashboard">
+
+        <!-- 3. БЛОК КЛЮЧЕВЫХ МЕТРИК (KPI Cards) -->
+        <section class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-title">Отслеживаемо товаров (SKU)</span>
+              <div class="kpi-icon blue"><i class="fa-solid fa-barcode"></i></div>
+            </div>
+            <div class="kpi-value" id="kpiTotalSku">1,428</div>
+            <div class="kpi-footer">
+              <span class="trend-badge trend-up"><i class="fa-solid fa-arrow-up"></i> +124</span>
+              <span style="color: var(--text-muted);">за последние 7 дней</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-title">Падений цен за сегодня</span>
+              <div class="kpi-icon amber"><i class="fa-solid fa-arrow-trend-down"></i></div>
+            </div>
+            <div class="kpi-value" id="kpiPriceDrops">24</div>
+            <div class="kpi-footer">
+              <span class="trend-badge trend-down"><i class="fa-solid fa-bolt"></i> Демпинг: 7 SKU</span>
+              <span style="color: var(--text-muted);">требуют реакции</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-title">Активных Telegram-алертов</span>
+              <div class="kpi-icon purple"><i class="fa-brands fa-telegram"></i></div>
+            </div>
+            <div class="kpi-value" id="kpiAlerts">5</div>
+            <div class="kpi-footer">
+              <span class="trend-badge trend-neutral">Мгновенно</span>
+              <span style="color: var(--text-muted);">средний пинг 1.4 сек</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-title">Средняя маржинальность рынка</span>
+              <div class="kpi-icon green"><i class="fa-solid fa-percent"></i></div>
+            </div>
+            <div class="kpi-value" id="kpiMargin">18.5%</div>
+            <div class="kpi-footer">
+              <span class="trend-badge trend-up"><i class="fa-solid fa-arrow-up"></i> +1.2%</span>
+              <span style="color: var(--text-muted);">к прошлой неделе</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ОСНОВНАЯ АНАЛИТИЧЕСКАЯ ЗОНА: ГРАФИК -->
+        <section class="section-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2>
+                <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
+                Динамика средних цен по категории (Индекс цен, ₽)
+              </h2>
+              <p id="chartSubtitle">Сравнение истории цен вашей компании с топ-3 конкурентами за последние 7 дней</p>
+            </div>
+            <div class="chart-controls">
+              <button class="pill-btn active" onclick="updateChartPeriod(7, this)">7 дней</button>
+              <button class="pill-btn" onclick="updateChartPeriod(14, this)">14 дней</button>
+              <button class="pill-btn" onclick="updateChartPeriod(30, this)">30 дней</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="priceDynamicsChart"></canvas>
+          </div>
+        </section>
+
+        <!-- 4. ОСНОВНАЯ АНАЛИТИЧЕСКАЯ ЗОНА: ТАБЛИЦА СРАВНЕНИЯ ЦЕН -->
+        <section class="section-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2>
+                <i class="fa-solid fa-scale-balanced" style="color: var(--primary);"></i>
+                Матрица сравнения цен и отклонений
+              </h2>
+              <p>Зеленый индикатор — ваша цена выгоднее конкурента, красный — вы продаете дороже</p>
+            </div>
+
+            <div class="table-controls">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="tableSearchInput" class="search-input" placeholder="Поиск по названию или артикулу..." />
+              </div>
+              <select id="deviationFilter" class="select-filter">
+                <option value="all">Все отклонения</option>
+                <option value="expensive">Мы дороже (Риск потери продаж)</option>
+                <option value="cheaper">Мы дешевле (В рынке)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Артикул / Товар</th>
+                  <th>Категория</th>
+                  <th class="our-price-col">Наша цена</th>
+                  <th>Конкурент А (TechMart)</th>
+                  <th>Конкурент Б (MegaStore)</th>
+                  <th>Конкурент В (Optima)</th>
+                  <th>Позиция</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Заполняется динамически через JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 2: ТОВАРЫ (Полный каталог SKU)
+           ========================================== -->
+      <div class="tab-pane" id="tab-products">
+        <section class="section-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i> Реестр отслеживаемых товаров (SKU)</h2>
+              <p>Прямые ссылки на карточки товаров конкурентов, контроль РРЦ и авто-переоценка</p>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('success', 'Добавление SKU', 'В полной версии здесь открывается форма добавления ссылок или загрузки прайс-листа.')">
+              <i class="fa-solid fa-plus"></i> Добавить товары
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SKU ID</th>
+                  <th>Наименование</th>
+                  <th>РРЦ (МРЦ)</th>
+                  <th>Наша цена</th>
+                  <th>Мин. цена рынка</th>
+                  <th>Ссылки привязки</th>
+                  <th>Статус РРЦ</th>
+                </tr>
+              </thead>
+              <tbody id="fullProductsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 3: КОНКУРЕНТЫ (Статус парсеров)
+           ========================================== -->
+      <div class="tab-pane" id="tab-competitors">
+        <div class="grid-2" id="competitorsGrid">
+          <div class="competitor-card">
+            <div class="comp-header">
+              <div>
+                <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> TechMart (techmart-shop.example)</div>
+                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Playwright + Stealth Proxy • Защита: Cloudflare Turnstile</span>
+              </div>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+            </div>
+            <div class="comp-stats">
+              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,428 SKU</strong></div>
+              <div class="comp-stat-item"><span>Успешность запросов</span><strong>99.8%</strong></div>
+              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>340 мс</strong></div>
+              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждые 2 часа</strong></div>
+            </div>
+          </div>
+
+          <div class="competitor-card">
+            <div class="comp-header">
+              <div>
+                <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> MegaStore (megastore-retail.example)</div>
+                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Async HTTPX + JSON API • Защита: Rate-Limiter</span>
+              </div>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+            </div>
+            <div class="comp-stats">
+              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,390 SKU</strong></div>
+              <div class="comp-stat-item"><span>Успешность запросов</span><strong>100%</strong></div>
+              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>120 мс</strong></div>
+              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждый час</strong></div>
+            </div>
+          </div>
+
+          <div class="competitor-card">
+            <div class="comp-header">
+              <div>
+                <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> Optima (optima-trade.example)</div>
+                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Python Scrapy + Residential Proxies • Защита: Qrator</span>
+              </div>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+            </div>
+            <div class="comp-stats">
+              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,180 SKU</strong></div>
+              <div class="comp-stat-item"><span>Успешность запросов</span><strong>98.9%</strong></div>
+              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>490 мс</strong></div>
+              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждые 3 часа</strong></div>
+            </div>
+          </div>
+
+          <div class="competitor-card">
+            <div class="comp-header">
+              <div>
+                <div class="comp-domain"><i class="fa-solid fa-store" style="color: var(--warning);"></i> Маркетплейсы (Ozon / WB / Kaspi API)</div>
+                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Гибридный парсер витрины + СПП • Мультирегиональность</span>
+              </div>
+              <span class="status-pill status-watch"><i class="fa-solid fa-bolt"></i> В очереди</span>
+            </div>
+            <div class="comp-stats">
+              <div class="comp-stat-item"><span>Связано товаров</span><strong>950 SKU</strong></div>
+              <div class="comp-stat-item"><span>Успешность запросов</span><strong>99.4%</strong></div>
+              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>410 мс</strong></div>
+              <div class="comp-stat-item"><span>Локация парсинга</span><strong>Москва / Алматы</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 4: EXCEL-ОТЧЕТЫ
+           ========================================== -->
+      <div class="tab-pane" id="tab-reports">
+        <div class="grid-2">
+          <div class="section-card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2><i class="fa-solid fa-file-excel" style="color: #059669;"></i> Конструктор автоматических Excel-выгрузок</h2>
+                <p>Формирование готовых таблиц `.xlsx` с условным форматированием и формулами</p>
+              </div>
+            </div>
+            <div style="padding: 20px 24px;">
+              <div class="switch-row">
+                <div>
+                  <strong>Цветовая заливка отклонений (Heatmap)</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Автоматически красить ячейки с демпингом в красный/зеленый в Excel</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="switch-row">
+                <div>
+                  <strong>Лист «Сводная аналитика по брендам»</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Добавлять вторую вкладку с Pivot-таблицей и графиками</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="switch-row">
+                <div>
+                  <strong>Прямые гиперссылки на товары конкурентов</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Кликабельные цены в ячейках для быстрой проверки менеджером</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div style="margin-top: 20px;">
+                <button class="btn btn-excel" onclick="exportToCSV()">
+                  <i class="fa-solid fa-download"></i> Сгенерировать и скачать отчет сейчас
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Архив сформированных отчетов</h2>
+                <p>Ежедневная авто-генерация по расписанию (08:30 МСК)</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Файл отчета</th>
+                    <th>SKU</th>
+                    <th>Размер</th>
+                    <th>Действие</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>MarketPulse_Full_Report_Today.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Сегодня, 08:30</span></td>
+                    <td class="price-val">1,428</td>
+                    <td>842 KB</td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dumping_Violations_RRP.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Сегодня, 08:31</span></td>
+                    <td class="price-val">24</td>
+                    <td>118 KB</td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>MarketPulse_Weekly_Digest.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Понедельник, 09:00</span></td>
+                    <td class="price-val">1,428</td>
+                    <td>2.4 MB</td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 5: TELEGRAM-АЛЕРТЫ
+           ========================================== -->
+      <div class="tab-pane" id="tab-alerts">
+        <div class="grid-2">
+          <div class="section-card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2><i class="fa-solid fa-bell" style="color: var(--primary);"></i> Правила срабатывания Telegram-уведомлений</h2>
+                <p>Настройка триггеров для бота и рабочих групп отдела продаж</p>
+              </div>
+            </div>
+            <div style="padding: 20px 24px;">
+              <div class="switch-row">
+                <div>
+                  <strong>Снижение цены конкурента более чем на 5%</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Присылать срочный алерт при резком демпинге</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="switch-row">
+                <div>
+                  <strong>Нарушение РРЦ / МРЦ дилерами</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Фиксация даты, скриншота страницы и прямой ссылки</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="switch-row">
+                <div>
+                  <strong>Товар закончился у конкурента (Out of Stock)</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Сигнал для безопасного повышения вашей маржинальности</div>
+                </div>
+                <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div style="margin-top: 18px;">
+                <button class="btn btn-primary" onclick="showToast('info', 'Тестовый алерт отправлен', 'Бот @MarketPulse_AlertBot отправил тестовую сводку в Telegram-чат.')">
+                  <i class="fa-brands fa-telegram"></i> Отправить тестовое уведомление
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2><i class="fa-brands fa-telegram" style="color: #0284c7;"></i> Пример сообщения в Telegram-чате</h2>
+                <p>Как выглядят автоматические уведомления для вашей команды</p>
+              </div>
+            </div>
+            <div style="padding: 20px 24px;">
+              <div class="tg-preview-box">
+                <div class="tg-message">
+                  <div class="tg-msg-header">
+                    <span><i class="fa-solid fa-robot"></i> MarketPulse Alert Bot</span>
+                    <span style="font-size: 11px; color: #94a3b8;">14:28</span>
+                  </div>
+                  <div>🚨 <strong>Обнаружен демпинг цены (-8.4%)</strong></div>
+                  <div style="margin: 8px 0;">
+                    📦 Товар: <strong>Apple iPhone 16 Pro 256GB Black</strong><br>
+                    🏷 Артикул: <span class="tg-code">MP-1042</span><br>
+                    💼 Наша цена: <span class="tg-code">114 990 ₽</span><br>
+                    📉 Конкурент А (TechMart): <span class="tg-code">105 300 ₽</span> (-9 690 ₽)
+                  </div>
+                  <div style="font-size: 11.5px; color: #93c5fd;">
+                    🔗 [Открыть карточку конкурента] • 📊 [Скачать Excel-срез]
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ВКЛАДКА 6: НАСТРОЙКИ
+           ========================================== -->
+      <div class="tab-pane" id="tab-settings">
+        <div class="section-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2><i class="fa-solid fa-sliders" style="color: var(--primary);"></i> Конфигурация системы и API-интеграций</h2>
+              <p>Параметры расписания парсинга, прокси-ротации и синхронизации с 1С / МойСклад / CRM</p>
+            </div>
+          </div>
+          <div style="padding: 24px; max-width: 680px;">
+            <div class="form-group">
+              <label>Расписание автоматического обхода (Cron / Интервал)</label>
+              <select class="form-control">
+                <option>Каждые 2 часа (Рекомендуется)</option>
+                <option>Каждый час (Высокая частота)</option>
+                <option>3 раза в сутки (08:00, 14:00, 20:00)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Webhook URL для синхронизации с 1С / МойСклад / Bitrix24</label>
+              <input type="text" class="form-control" value="https://erp.company.local/api/v1/price-webhook" readonly />
+            </div>
+            <div class="form-group">
+              <label>Telegram Chat ID для отправки отчетов</label>
+              <input type="text" class="form-control" value="-1001948275102 (Отдел ценообразования)" readonly />
+            </div>
+            <button class="btn btn-primary" onclick="showToast('success', 'Настройки сохранены', 'Конфигурация расписания парсеров успешно обновлена.')">
+              <i class="fa-solid fa-floppy-disk"></i> Сохранить параметры
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           6. ОБЯЗАТЕЛЬНЫЙ ДИСКЛЕЙМЕР И CALL-TO-ACTION
+           ========================================== -->
+      <footer class="cta-banner">
+        <div class="cta-content">
+          <div class="cta-tag">
+            <i class="fa-solid fa-code"></i> Custom Python Scraping &amp; Automation Solutions
+          </div>
+          <p class="cta-text">
+            <strong>Внимание:</strong> Это демонстрационный интерфейс с тестовыми данными. Реальное автоматизированное приложение для мониторинга цен и кастомные решения под задачи вашего бизнеса можно заказать, связавшись с нами.
+          </p>
+        </div>
+
+        <div class="cta-buttons">
+          <button class="btn btn-cta-primary" onclick="openOrderModal()">
+            <i class="fa-solid fa-rocket"></i>
+            <span>Заказать разработку</span>
+          </button>
+          <button class="btn btn-cta-tg" onclick="contactTelegram()">
+            <i class="fa-brands fa-telegram"></i>
+            <span>Связаться в Telegram</span>
+          </button>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- КОНТЕЙНЕР ДЛЯ TOAST-УВЕДОМЛЕНИЙ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- МОДАЛЬНОЕ ОКНО «ЗАКАЗАТЬ РАЗРАБОТКУ» -->
+  <div class="modal-backdrop" id="orderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Заказать систему мониторинга цен</h3>
+        <button class="close-modal" onclick="closeOrderModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+        Разработаем кастомный парсер любой сложности (обход Cloudflare, авторизация, выбор городов), настроим выгрузку в Excel/Google Таблицы, интеграцию с 1С и Telegram-бота под ваши бизнес-процессы.
+      </p>
+      <form onsubmit="submitOrderForm(event)">
+        <div class="form-group">
+          <label>Ваше имя или компания</label>
+          <input type="text" class="form-control" placeholder="Например: Алексей, ООО ТехноТрейд" required />
+        </div>
+        <div class="form-group">
+          <label>Ваш контакт (Telegram / WhatsApp / Email)</label>
+          <input type="text" class="form-control" placeholder="@username или +7 (999) 000-00-00" required />
+        </div>
+        <div class="form-group">
+          <label>Краткое описание задачи (сайты-доноры, кол-во товаров)</label>
+          <textarea class="form-control" rows="3" placeholder="Нужно мониторить 5 сайтов конкурентов (~2000 товаров) и формировать ежедневный Excel-отчет..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-outline" onclick="closeOrderModal()">Отмена</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Отправить запрос</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT ЛОГИКА (ES6+)
+       ========================================== -->
+  <script>
+    // 1. Тестовый набор данных (Товары и цены конкурентов)
+    const productsData = [
+      {
+        sku: 'MP-1042',
+        name: 'Apple iPhone 16 Pro 256GB Black Titanium',
+        category: 'smartphones',
+        categoryLabel: 'Смартфоны',
+        rrp: 115990,
+        ourPrice: 114990,
+        compA: 109990, // Конкурент дешевле -> мы дороже (красный)
+        compB: 116500, // Конкурент дороже -> мы дешевле (зеленый)
+        compC: 114990
+      },
+      {
+        sku: 'MP-1089',
+        name: 'Samsung Galaxy S24 Ultra 12/512GB Titanium Gray',
+        category: 'smartphones',
+        categoryLabel: 'Смартфоны',
+        rrp: 109990,
+        ourPrice: 104500,
+        compA: 108900,
+        compB: 107200,
+        compC: 105990
+      },
+      {
+        sku: 'MP-2015',
+        name: 'Ноутбук Apple MacBook Air 15" M3 (16/512GB) Space Gray',
+        category: 'laptops',
+        categoryLabel: 'Ноутбуки',
+        rrp: 154990,
+        ourPrice: 149900,
+        compA: 152400,
+        compB: 144900,
+        compC: 151000
+      },
+      {
+        sku: 'MP-2048',
+        name: 'Ноутбук Lenovo Legion Pro 5 16IRX9 (i7-14700HX / RTX 4070)',
+        category: 'laptops',
+        categoryLabel: 'Ноутбуки',
+        rrp: 189990,
+        ourPrice: 182000,
+        compA: 186500,
+        compB: 184900,
+        compC: 189000
+      },
+      {
+        sku: 'MP-3011',
+        name: 'Видеокарта ASUS TUF Gaming GeForce RTX 4070 Ti SUPER 16GB',
+        category: 'components',
+        categoryLabel: 'Комплектующие',
+        rrp: 98990,
+        ourPrice: 96500,
+        compA: 92400,
+        compB: 94800,
+        compC: 97900
+      },
+      {
+        sku: 'MP-3074',
+        name: 'Процессор AMD Ryzen 7 7800X3D OEM',
+        category: 'components',
+        categoryLabel: 'Комплектующие',
+        rrp: 44990,
+        ourPrice: 41900,
+        compA: 43500,
+        compB: 42800,
+        compC: 44100
+      },
+      {
+        sku: 'MP-1104',
+        name: 'Xiaomi 14T Pro 12/512GB Titan Black',
+        category: 'smartphones',
+        categoryLabel: 'Смартфоны',
+        rrp: 69990,
+        ourPrice: 67900,
+        compA: 64990,
+        compB: 68500,
+        compC: 67900
+      },
+      {
+        sku: 'MP-3099',
+        name: 'SSD Накопитель Samsung 990 PRO 2TB NVMe M.2',
+        category: 'components',
+        categoryLabel: 'Комплектующие',
+        rrp: 21990,
+        ourPrice: 19400,
+        compA: 20500,
+        compB: 21200,
+        compC: 19990
+      }
+    ];
+
+    // 2. Данные для графика по категориям и периодам
+    const chartDataSets = {
+      all: {
+        kpiSku: '1,428', kpiDrops: '24', kpiAlerts: '5', kpiMargin: '18.5%',
+        our:   [98400, 98100, 97800, 97500, 96900, 96400, 96100],
+        compA: [99200, 98500, 97100, 96200, 95400, 94900, 94600],
+        compB: [100500, 100100, 99800, 99200, 98900, 98400, 97900],
+        compC: [99800, 99400, 99100, 98800, 98500, 98200, 97600]
+      },
+      smartphones: {
+        kpiSku: '542', kpiDrops: '11', kpiAlerts: '3', kpiMargin: '14.2%',
+        our:   [97200, 96800, 96500, 96100, 95900, 95800, 95790],
+        compA: [98100, 97000, 95200, 94100, 93800, 93200, 92900],
+        compB: [98900, 98400, 98000, 97600, 97400, 97100, 96900],
+        compC: [97900, 97500, 97200, 96900, 96500, 96300, 96100]
+      },
+      laptops: {
+        kpiSku: '386', kpiDrops: '5', kpiAlerts: '1', kpiMargin: '21.8%',
+        our:   [168500, 168000, 167200, 166900, 166400, 166000, 165950],
+        compA: [171000, 170500, 169900, 169400, 169800, 169500, 169450],
+        compB: [169200, 168100, 166500, 165800, 165100, 164900, 164900],
+        compC: [172000, 171500, 171000, 170800, 170500, 170200, 170000]
+      },
+      components: {
+        kpiSku: '500', kpiDrops: '8', kpiAlerts: '1', kpiMargin: '20.4%',
+        our:   [54200, 53900, 53500, 53100, 52900, 52700, 52600],
+        compA: [54900, 54100, 53200, 52800, 52400, 52100, 51900],
+        compB: [55500, 55100, 54800, 54400, 54000, 53600, 52900],
+        compC: [56000, 55800, 55200, 54900, 54500, 54200, 53990]
+      }
+    };
+
+    let currentCategory = 'all';
+    let currentPeriodDays = 7;
+    let priceChart = null;
+
+    // Форматирование валюты
+    function formatRub(val) {
+      return new Intl.NumberFormat('ru-RU').format(val) + ' ₽';
+    }
+
+    // Расчет бейджа отклонения нашей цены относительно конкурента
+    // Если наша цена < цены конкурента -> мы дешевле (выгодно нам -> зеленый бейдж)
+    // Если наша цена > цены конкурента -> мы дороже (конкурент демпингует -> красный бейдж)
+    function renderPriceCell(ourPrice, compPrice) {
+      const diffPct = ((ourPrice - compPrice) / compPrice) * 100;
+      const absPct = Math.abs(diffPct).toFixed(1);
+
+      let badgeHtml = '';
+      if (Math.abs(diffPct) < 0.15) {
+        badgeHtml = `<span class="diff-badge diff-equal">0.0%</span>`;
+      } else if (ourPrice < compPrice) {
+        badgeHtml = `<span class="diff-badge diff-favorable" title="Наша цена дешевле конкурента на ${absPct}%"><i class="fa-solid fa-arrow-down"></i> -${absPct}%</span>`;
+      } else {
+        badgeHtml = `<span class="diff-badge diff-expensive" title="Наша цена дороже конкурента на ${absPct}%"><i class="fa-solid fa-arrow-up"></i> +${absPct}%</span>`;
+      }
+
+      return `
+        <div class="comp-cell">
+          <span class="price-val">${formatRub(compPrice)}</span>
+          ${badgeHtml}
+        </div>
+      `;
+    }
+
+    // 3. Отрисовка основной таблицы сравнения
+    function renderComparisonTable() {
+      const tbody = document.getElementById('comparisonTableBody');
+      const searchQuery = document.getElementById('tableSearchInput').value.trim().toLowerCase();
+      const devFilter = document.getElementById('deviationFilter').value;
+
+      const filtered = productsData.filter(item => {
+        const matchCategory = currentCategory === 'all' || item.category === currentCategory;
+        const matchSearch = item.name.toLowerCase().includes(searchQuery) || item.sku.toLowerCase().includes(searchQuery);
+
+        const minCompPrice = Math.min(item.compA, item.compB, item.compC);
+        const isMoreExpensive = item.ourPrice > minCompPrice;
+
+        let matchDeviation = true;
+        if (devFilter === 'expensive') matchDeviation = isMoreExpensive;
+        if (devFilter === 'cheaper') matchDeviation = !isMoreExpensive;
+
+        return matchCategory && matchSearch && matchDeviation;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 32px; color: var(--text-muted);">
+              По выбранным фильтрам товары не найдены. Попробуйте сбросить параметры поиска.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const minComp = Math.min(item.compA, item.compB, item.compC);
+        let statusHtml = '';
+
+        if (item.ourPrice <= minComp) {
+          statusHtml = `<span class="status-pill status-optimal"><i class="fa-solid fa-circle-check"></i> Лучшая цена</span>`;
+        } else if ((item.ourPrice - minComp) / minComp > 0.03) {
+          statusHtml = `<span class="status-pill status-risk"><i class="fa-solid fa-triangle-exclamation"></i> Демпинг конкурента</span>`;
+        } else {
+          statusHtml = `<span class="status-pill status-watch"><i class="fa-solid fa-eye"></i> В пределах нормы</span>`;
+        }
+
+        return `
+          <tr>
+            <td>
+              <div class="sku-cell">
+                <span class="product-name">${item.name}</span>
+                <span class="product-meta">SKU: ${item.sku} • РРЦ: ${formatRub(item.rrp)}</span>
+              </div>
+            </td>
+            <td><span class="pill-btn" style="cursor: default; padding: 3px 9px; font-size: 11.5px;">${item.categoryLabel}</span></td>
+            <td class="our-price-col"><span class="price-val" style="color: var(--primary);">${formatRub(item.ourPrice)}</span></td>
+            <td>${renderPriceCell(item.ourPrice, item.compA)}</td>
+            <td>${renderPriceCell(item.ourPrice, item.compB)}</td>
+            <td>${renderPriceCell(item.ourPrice, item.compC)}</td>
+            <td>${statusHtml}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Отрисовка расширенной таблицы во вкладке «Товары»
+    function renderFullProductsTable() {
+      const tbody = document.getElementById('fullProductsTableBody');
+      tbody.innerHTML = productsData.map(item => {
+        const minMarket = Math.min(item.ourPrice, item.compA, item.compB, item.compC);
+        const rrpViolation = minMarket < item.rrp * 0.96;
+        return `
+          <tr>
+            <td><span class="product-meta" style="font-weight: 600; color: var(--text-main);">${item.sku}</span></td>
+            <td><strong>${item.name}</strong></td>
+            <td class="price-val">${formatRub(item.rrp)}</td>
+            <td class="price-val" style="color: var(--primary);">${formatRub(item.ourPrice)}</td>
+            <td class="price-val">${formatRub(minMarket)}</td>
+            <td><span style="font-size: 12px; color: var(--text-secondary);"><i class="fa-solid fa-link"></i> 3 магазина привязано</span></td>
+            <td>
+              ${rrpViolation
+                ? '<span class="status-pill status-risk"><i class="fa-solid fa-ban"></i> Нарушение РРЦ</span>'
+                : '<span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Соблюдается</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 4. Инициализация и обновление графика Chart.js
+    function getDateLabels(daysCount) {
+      const labels = [];
+      const today = new Date();
+      for (let i = daysCount - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        labels.push(d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short' }));
+      }
+      return labels;
+    }
+
+    function extrapolateSeries(baseArr, targetLen) {
+      if (targetLen === 7) return [...baseArr];
+      const result = [];
+      for (let i = 0; i < targetLen; i++) {
+        const baseIdx = i % baseArr.length;
+        const wave = Math.round(Math.sin(i * 0.6) * 650);
+        result.push(baseArr[baseIdx] + wave);
+      }
+      return result;
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('priceDynamicsChart').getContext('2d');
+      const dataConfig = chartDataSets[currentCategory];
+
+      priceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: getDateLabels(currentPeriodDays),
+          datasets: [
+            {
+              label: 'Наша цена (Средняя)',
+              data: extrapolateSeries(dataConfig.our, currentPeriodDays),
+              borderColor: '#2563eb',
+              backgroundColor: 'rgba(37, 99, 235, 0.08)',
+              borderWidth: 3,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.35,
+              fill: true
+            },
+            {
+              label: 'Конкурент А (TechMart)',
+              data: extrapolateSeries(dataConfig.compA, currentPeriodDays),
+              borderColor: '#ef4444',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 3,
+              tension: 0.35,
+              fill: false
+            },
+            {
+              label: 'Конкурент Б (MegaStore)',
+              data: extrapolateSeries(dataConfig.compB, currentPeriodDays),
+              borderColor: '#10b981',
+              borderWidth: 2,
+              pointRadius: 3,
+              tension: 0.35,
+              fill: false
+            },
+            {
+              label: 'Конкурент В (Optima)',
+              data: extrapolateSeries(dataConfig.compC, currentPeriodDays),
+              borderColor: '#f59e0b',
+              borderWidth: 2,
+              pointRadius: 3,
+              tension: 0.35,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              align: 'end',
+              labels: {
+                usePointStyle: true,
+                boxWidth: 8,
+                font: { family: "'Inter', sans-serif", size: 12, weight: '500' }
+              }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleFont: { family: "'Inter', sans-serif", size: 13 },
+              bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: function(context) {
+                  return ` ${context.dataset.label}: ${formatRub(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: "'Inter', sans-serif", size: 11.5 }, color: '#64748b' }
+            },
+            y: {
+              grid: { color: '#f1f5f9' },
+              ticks: {
+                font: { family: "'JetBrains Mono', monospace", size: 11.5 },
+                color: '#64748b',
+                callback: function(value) {
+                  return new Intl.NumberFormat('ru-RU').format(value) + ' ₽';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateDashboardByCategory(category) {
+      currentCategory = category;
+      const cfg = chartDataSets[category];
+
+      // Обновляем KPI-карточки
+      document.getElementById('kpiTotalSku').textContent = cfg.kpiSku;
+      document.getElementById('kpiPriceDrops').textContent = cfg.kpiDrops;
+      document.getElementById('kpiAlerts').textContent = cfg.kpiAlerts;
+      document.getElementById('kpiMargin').textContent = cfg.kpiMargin;
+
+      // Обновляем график
+      if (priceChart) {
+        priceChart.data.labels = getDateLabels(currentPeriodDays);
+        priceChart.data.datasets[0].data = extrapolateSeries(cfg.our, currentPeriodDays);
+        priceChart.data.datasets[1].data = extrapolateSeries(cfg.compA, currentPeriodDays);
+        priceChart.data.datasets[2].data = extrapolateSeries(cfg.compB, currentPeriodDays);
+        priceChart.data.datasets[3].data = extrapolateSeries(cfg.compC, currentPeriodDays);
+        priceChart.update();
+      }
+
+      // Обновляем таблицу
+      renderComparisonTable();
+    }
+
+    function updateChartPeriod(days, btnEl) {
+      currentPeriodDays = days;
+      const parent = btnEl.parentElement;
+      parent.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
+
+      document.getElementById('chartSubtitle').textContent =
+        `Сравнение истории цен вашей компании с топ-3 конкурентами за последние ${days} дней`;
+
+      updateDashboardByCategory(currentCategory);
+    }
+
+    // 5. Навигация по вкладкам сайдбара
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+
+        const targetTab = item.getAttribute('data-tab');
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+        document.getElementById(`tab-${targetTab}`).classList.add('active');
+      });
+    });
+
+    // Переключение категорий в тулбаре
+    document.querySelectorAll('#categoryFilterBar .pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#categoryFilterBar .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.getAttribute('data-category');
+        updateDashboardByCategory(cat);
+      });
+    });
+
+    // Слушатели поиска и фильтра таблицы
+    document.getElementById('tableSearchInput').addEventListener('input', renderComparisonTable);
+    document.getElementById('deviationFilter').addEventListener('change', renderComparisonTable);
+
+    // 6. Интерактивность кнопок тулбара
+    // Импорт Excel/CSV
+    document.getElementById('btnImport').addEventListener('click', () => {
+      document.getElementById('hiddenFileInput').click();
+    });
+
+    document.getElementById('hiddenFileInput').addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const fileName = e.target.files[0].name;
+        showToast('success', 'Прайс-лист загружен', `Файл "${fileName}" успешно обработан: распознано 1,428 артикулов.`);
+        e.target.value = '';
+      }
+    });
+
+    // Запустить проверку цен (живая симуляция парсинга)
+    document.getElementById('btnRunCheck').addEventListener('click', function() {
+      const btn = this;
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Парсинг конкурентов (0/4)...</span>`;
+
+      showToast('info', 'Запущен обход сайтов', 'Асинхронный сбор цен через пул резидентных прокси...');
+
+      setTimeout(() => {
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Обход Cloudflare (3/4)...</span>`;
+      }, 900);
+
+      setTimeout(() => {
+        // Слегка меняем цены для наглядного эффекта живого обновления
+        productsData.forEach(item => {
+          const delta = (Math.floor(Math.random() * 5) - 2) * 150;
+          item.compA = Math.max(15000, item.compA + delta);
+        });
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        document.getElementById('lastSyncTime').textContent = `Сегодня, ${timeStr}`;
+
+        renderComparisonTable();
+        renderFullProductsTable();
+        updateDashboardByCategory(currentCategory);
+
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast('success', 'Мониторинг завершен!', 'Обновлено 1,428 SKU. Обнаружено 2 новых снижения цены у TechMart.');
+      }, 1900);
+    });
+
+    // Экспорт в Excel (реальная генерация CSV с UTF-8 BOM для открытия в MS Excel)
+    function exportToCSV() {
+      const btn = document.getElementById('btnExport');
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Формирование .CSV...</span>`;
+
+      setTimeout(() => {
+        const headers = ['SKU', 'Наименование', 'Категория', 'РРЦ (руб)', 'Наша цена (руб)', 'TechMart (руб)', 'MegaStore (руб)', 'Optima (руб)'];
+        const rows = productsData.map(p => [
+          p.sku,
+          `"${p.name.replace(/"/g, '""')}"`,
+          p.categoryLabel,
+          p.rrp,
+          p.ourPrice,
+          p.compA,
+          p.compB,
+          p.compC
+        ]);
+
+        const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `MARKETPULSE_Price_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        showToast('success', 'Отчет успешно выгружен', 'Файл совместим с Microsoft Excel и содержит актуальную матрицу цен.');
+      }, 600);
+    }
+
+    document.getElementById('btnExport').addEventListener('click', exportToCSV);
+
+    // 7. Всплывающие уведомления (Toasts)
+    function showToast(type, title, message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+
+      let iconClass = 'fa-circle-info';
+      if (type === 'success') iconClass = 'fa-circle-check';
+      if (type === 'warning') iconClass = 'fa-triangle-exclamation';
+
+      toast.innerHTML = `
+        <i class="fa-solid ${iconClass} toast-icon"></i>
+        <div class="toast-body">
+          <strong>${title}</strong>
+          <span>${message}</span>
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(40px)';
+        toast.style.transition = '0.25s ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 4200);
+    }
+
+    // 8. Модальное окно заказа и CTA кнопки
+    function openOrderModal() {
+      document.getElementById('orderModal').classList.add('open');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('orderModal').classList.remove('open');
+    }
+
+    function submitOrderForm(e) {
+      e.preventDefault();
+      closeOrderModal();
+      showToast('success', 'Заявка отправлена!', 'Мы свяжемся с вами в ближайшее время для обсуждения архитектуры парсера.');
+      e.target.reset();
+    }
+
+    function contactTelegram() {
+      showToast('info', 'Переход в Telegram', 'В реальном портфолио здесь можно указать прямую ссылку https://t.me/ваш_никнейм.');
+      openOrderModal();
+    }
+
+    // Закрытие модалки по клику на фон
+    document.getElementById('orderModal').addEventListener('click', (e) => {
+      if (e.target.id === 'orderModal') closeOrderModal();
+    });
+
+    // Инициализация при старте
+    window.addEventListener('DOMContentLoaded', () => {
+      renderComparisonTable();
+      renderFullProductsTable();
+      initChart();
+    });
+  </script>
+</body>
+</html>
