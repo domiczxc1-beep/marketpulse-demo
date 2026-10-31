@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MARKETPULSE — Automated Price Monitoring & Excel Reporting</title>
-  <!-- Google Fonts: Inter & JetBrains Mono для табличных чисел -->
+  <!-- Google Fonts: Inter & JetBrains Mono for tabular numbers -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 
   <style>
     :root {
-      /* Цветовая палитра (Fintech / Linear / Clean SaaS) */
+      /* Color palette (Fintech / Linear / Clean SaaS) */
       --bg-body: #f4f6f9;
       --bg-surface: #ffffff;
       --bg-subtle: #f8fafc;
@@ -52,20 +52,20 @@
       --border-color: #e2e8f0;
       --border-subtle: #f1f5f9;
 
-      /* Размеры и отступы */
+      /* Sizes and spacing */
       --sidebar-width: 260px;
       --header-height: 72px;
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
 
-      /* Тени */
+      /* Shadows */
       --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
       --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
       --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
       --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.05);
 
-      /* Типографика */
+      /* Typography */
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -89,7 +89,7 @@
     }
 
     /* ==========================================
-       SIDEBAR (Боковая навигация)
+       SIDEBAR (Side navigation)
        ========================================== */
     .sidebar {
       width: var(--sidebar-width);
@@ -525,7 +525,7 @@
     }
 
     /* ==========================================
-       KPI CARDS (Блок ключевых метрик)
+       KPI CARDS (Key performance indicators)
        ========================================== */
     .kpi-grid {
       display: grid;
@@ -658,7 +658,7 @@
       position: relative;
     }
 
-    /* Таблица сравнения цен */
+    /* Price comparison table */
     .table-controls {
       display: flex;
       align-items: center;
@@ -792,7 +792,7 @@
       border-radius: 5px;
     }
 
-    /* Зеленый — наша цена дешевле конкурента (выгодно нам). Красный — наша цена дороже (риск потери продаж) */
+    /* Green: our price is lower than the competitor. Red: our price is higher, risking lost sales. */
     .diff-favorable {
       background-color: var(--success-bg);
       color: var(--success-text);
@@ -826,7 +826,7 @@
     .status-watch { background: var(--warning-bg); color: var(--warning-text); }
 
     /* ==========================================
-       SECONDARY VIEWS (Вкладки Сайдбара)
+       SECONDARY VIEWS (Sidebar tabs)
        ========================================== */
     .tab-pane {
       display: none;
@@ -982,7 +982,7 @@
     }
 
     /* ==========================================
-       CTA BANNER / FOOTER (Обязательный блок)
+       CTA BANNER / FOOTER (Required section)
        ========================================== */
     .cta-banner {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -1134,7 +1134,7 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Модальное окно заказа */
+    /* Order modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -1208,7 +1208,7 @@
       border-color: var(--primary);
     }
 
-    /* Адаптивность */
+    /* Responsive layout */
     @media (max-width: 1200px) {
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .grid-3 { grid-template-columns: repeat(2, 1fr); }
@@ -1235,7 +1235,7 @@
 <body>
 
   <!-- ==========================================
-       1. САЙДБАР (Навигация)
+       1. SIDEBAR (Navigation)
        ========================================== -->
   <aside class="sidebar">
     <div class="sidebar-brand">
@@ -1251,68 +1251,68 @@
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Аналитика</div>
+      <div class="nav-section-label">Analytics</div>
       <a class="nav-item active" data-tab="dashboard">
         <div class="nav-item-left">
           <i class="fa-solid fa-gauge-high"></i>
-          <span>Дашборд</span>
+          <span>Dashboard</span>
         </div>
       </a>
       <a class="nav-item" data-tab="products">
         <div class="nav-item-left">
           <i class="fa-solid fa-boxes-stacked"></i>
-          <span>Товары</span>
+          <span>Products</span>
         </div>
         <span class="nav-badge" id="sidebarSkuCount">1,428</span>
       </a>
       <a class="nav-item" data-tab="competitors">
         <div class="nav-item-left">
           <i class="fa-solid fa-spider"></i>
-          <span>Конкуренты</span>
+          <span>Competitors</span>
         </div>
         <span class="nav-badge">4</span>
       </a>
 
-      <div class="nav-section-label" style="margin-top: 12px;">Автоматизация</div>
+      <div class="nav-section-label" style="margin-top: 12px;">Automation</div>
       <a class="nav-item" data-tab="reports">
         <div class="nav-item-left">
           <i class="fa-solid fa-file-excel"></i>
-          <span>Excel-отчеты</span>
+          <span>Excel Reports</span>
         </div>
       </a>
       <a class="nav-item" data-tab="alerts">
         <div class="nav-item-left">
           <i class="fa-brands fa-telegram"></i>
-          <span>Telegram-алерты</span>
+          <span>Telegram Alerts</span>
         </div>
         <span class="nav-badge alert" id="sidebarAlertCount">5</span>
       </a>
       <a class="nav-item" data-tab="settings">
         <div class="nav-item-left">
           <i class="fa-solid fa-sliders"></i>
-          <span>Настройки</span>
+          <span>Settings</span>
         </div>
       </a>
     </nav>
 
     <div class="sidebar-status">
       <div class="status-header">
-        <span>Парсинг-кластер</span>
+        <span>Scraping Cluster</span>
         <span class="pulse-dot"></span>
       </div>
       <div class="status-meta">
-        <span>Прокси пул: 48 IPv4 (RU/KZ)</span>
+        <span>Proxy pool: 48 IPv4 (RU/KZ)</span>
         <span>Uptime: 99.94% • Playwright</span>
       </div>
     </div>
   </aside>
 
   <!-- ==========================================
-       ОСНОВНОЙ КОНТЕНТ
+       MAIN CONTENT
        ========================================== -->
   <div class="main-wrapper">
 
-    <!-- 2. ШАПКА (Header) -->
+    <!-- 2. HEADER -->
     <header class="top-header">
       <div class="header-titles">
         <h1>MARKETPULSE</h1>
@@ -1322,38 +1322,38 @@
       <div class="header-right">
         <div class="sync-timestamp">
           <i class="fa-regular fa-clock"></i>
-          <span>Обновлено: <strong id="lastSyncTime">Сегодня, 14:30</strong></span>
+          <span>Updated: <strong id="lastSyncTime">Today, 14:30</strong></span>
         </div>
 
-        <div class="demo-badge" title="Все данные сгенерированы для демонстрации возможностей системы">
+        <div class="demo-badge" title="All data is generated to demonstrate the interface">
           <i class="fa-solid fa-flask"></i>
-          <span>DEMO MODE (Тестовые данные)</span>
+          <span>DEMO MODE (Sample Data)</span>
         </div>
 
-        <div class="user-profile" onclick="showToast('info', 'Профиль аналитика', 'Вы находитесь в демонстрационном аккаунте Senior Price Analyst.')">
-          <div class="avatar">МП</div>
+        <div class="user-profile" onclick="showToast('info', 'Analyst Profile', 'You are viewing a demo Senior Price Analyst account.')">
+          <div class="avatar">MP</div>
           <div class="user-info">
-            <span class="user-name">Отдел закупок</span>
+            <span class="user-name">Purchasing Department</span>
             <span class="user-role">Enterprise Plan</span>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- РАБОЧАЯ ОБЛАСТЬ -->
+    <!-- WORKSPACE -->
     <main class="workspace">
 
-      <!-- 5. ПАНЕЛЬ ДЕЙСТВИЙ (Toolbar) -->
+      <!-- 5. ACTION TOOLBAR -->
       <div class="toolbar">
         <div class="toolbar-left">
           <span class="toolbar-label">
-            <i class="fa-solid fa-layer-group"></i> Категория:
+            <i class="fa-solid fa-layer-group"></i> Category:
           </span>
           <div class="category-pills" id="categoryFilterBar">
-            <button class="pill-btn active" data-category="all">Все категории</button>
-            <button class="pill-btn" data-category="smartphones">Смартфоны</button>
-            <button class="pill-btn" data-category="laptops">Ноутбуки</button>
-            <button class="pill-btn" data-category="components">Комплектующие</button>
+            <button class="pill-btn active" data-category="all">All Categories</button>
+            <button class="pill-btn" data-category="smartphones">Smartphones</button>
+            <button class="pill-btn" data-category="laptops">Laptops</button>
+            <button class="pill-btn" data-category="components">Components</button>
           </div>
         </div>
 
@@ -1361,89 +1361,89 @@
           <input type="file" id="hiddenFileInput" accept=".xlsx,.xls,.csv" style="display: none;" />
           <button class="btn btn-outline" id="btnImport">
             <i class="fa-solid fa-file-arrow-up"></i>
-            <span>Импорт Excel/CSV</span>
+            <span>Import Excel/CSV</span>
           </button>
           <button class="btn btn-primary" id="btnRunCheck">
             <i class="fa-solid fa-rotate"></i>
-            <span>Запустить проверку цен</span>
+            <span>Run Price Check</span>
           </button>
           <button class="btn btn-excel" id="btnExport">
             <i class="fa-solid fa-file-excel"></i>
-            <span>Экспорт в Excel</span>
+            <span>Export to Excel</span>
           </button>
         </div>
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 1: ДАШБОРД (Основная)
+           TAB 1: DASHBOARD (Overview)
            ========================================== -->
       <div class="tab-pane active" id="tab-dashboard">
 
-        <!-- 3. БЛОК КЛЮЧЕВЫХ МЕТРИК (KPI Cards) -->
+        <!-- 3. KPI CARDS -->
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-title">Отслеживаемо товаров (SKU)</span>
+              <span class="kpi-title">Tracked Products (SKU)</span>
               <div class="kpi-icon blue"><i class="fa-solid fa-barcode"></i></div>
             </div>
             <div class="kpi-value" id="kpiTotalSku">1,428</div>
             <div class="kpi-footer">
               <span class="trend-badge trend-up"><i class="fa-solid fa-arrow-up"></i> +124</span>
-              <span style="color: var(--text-muted);">за последние 7 дней</span>
+              <span style="color: var(--text-muted);">over the past 7 days</span>
             </div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-title">Падений цен за сегодня</span>
+              <span class="kpi-title">Price Drops Today</span>
               <div class="kpi-icon amber"><i class="fa-solid fa-arrow-trend-down"></i></div>
             </div>
             <div class="kpi-value" id="kpiPriceDrops">24</div>
             <div class="kpi-footer">
-              <span class="trend-badge trend-down"><i class="fa-solid fa-bolt"></i> Демпинг: 7 SKU</span>
-              <span style="color: var(--text-muted);">требуют реакции</span>
+              <span class="trend-badge trend-down"><i class="fa-solid fa-bolt"></i> Price undercuts: 7 SKUs</span>
+              <span style="color: var(--text-muted);">require attention</span>
             </div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-title">Активных Telegram-алертов</span>
+              <span class="kpi-title">Active Telegram Alerts</span>
               <div class="kpi-icon purple"><i class="fa-brands fa-telegram"></i></div>
             </div>
             <div class="kpi-value" id="kpiAlerts">5</div>
             <div class="kpi-footer">
-              <span class="trend-badge trend-neutral">Мгновенно</span>
-              <span style="color: var(--text-muted);">средний пинг 1.4 сек</span>
+              <span class="trend-badge trend-neutral">Instant</span>
+              <span style="color: var(--text-muted);">average ping 1.4 sec</span>
             </div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-top">
-              <span class="kpi-title">Средняя маржинальность рынка</span>
+              <span class="kpi-title">Average Market Margin</span>
               <div class="kpi-icon green"><i class="fa-solid fa-percent"></i></div>
             </div>
             <div class="kpi-value" id="kpiMargin">18.5%</div>
             <div class="kpi-footer">
               <span class="trend-badge trend-up"><i class="fa-solid fa-arrow-up"></i> +1.2%</span>
-              <span style="color: var(--text-muted);">к прошлой неделе</span>
+              <span style="color: var(--text-muted);">vs. last week</span>
             </div>
           </div>
         </section>
 
-        <!-- 4. ОСНОВНАЯ АНАЛИТИЧЕСКАЯ ЗОНА: ГРАФИК -->
+        <!-- 4. MAIN ANALYTICS: CHART -->
         <section class="section-card">
           <div class="card-header">
             <div class="card-title-group">
               <h2>
                 <i class="fa-solid fa-chart-area" style="color: var(--primary);"></i>
-                Динамика средних цен по категории (Индекс цен, ₽)
+                Average Price Trends by Category (Price Index, RUB)
               </h2>
-              <p id="chartSubtitle">Сравнение истории цен вашей компании с топ-3 конкурентами за последние 7 дней</p>
+              <p id="chartSubtitle">Your company's price history vs. the top 3 competitors over the past 7 days</p>
             </div>
             <div class="chart-controls">
-              <button class="pill-btn active" onclick="updateChartPeriod(7, this)">7 дней</button>
-              <button class="pill-btn" onclick="updateChartPeriod(14, this)">14 дней</button>
-              <button class="pill-btn" onclick="updateChartPeriod(30, this)">30 дней</button>
+              <button class="pill-btn active" onclick="updateChartPeriod(7, this)">7 days</button>
+              <button class="pill-btn" onclick="updateChartPeriod(14, this)">14 days</button>
+              <button class="pill-btn" onclick="updateChartPeriod(30, this)">30 days</button>
             </div>
           </div>
           <div class="chart-container">
@@ -1451,26 +1451,26 @@
           </div>
         </section>
 
-        <!-- 4. ОСНОВНАЯ АНАЛИТИЧЕСКАЯ ЗОНА: ТАБЛИЦА СРАВНЕНИЯ ЦЕН -->
+        <!-- 4. MAIN ANALYTICS: PRICE COMPARISON TABLE -->
         <section class="section-card">
           <div class="card-header">
             <div class="card-title-group">
               <h2>
                 <i class="fa-solid fa-scale-balanced" style="color: var(--primary);"></i>
-                Матрица сравнения цен и отклонений
+                Price Comparison and Deviation Matrix
               </h2>
-              <p>Зеленый индикатор — ваша цена выгоднее конкурента, красный — вы продаете дороже</p>
+              <p>Green indicates your price is lower than a competitor's; red indicates your price is higher</p>
             </div>
 
             <div class="table-controls">
               <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="tableSearchInput" class="search-input" placeholder="Поиск по названию или артикулу..." />
+                <input type="text" id="tableSearchInput" class="search-input" placeholder="Search by product name or SKU..." />
               </div>
               <select id="deviationFilter" class="select-filter">
-                <option value="all">Все отклонения</option>
-                <option value="expensive">Мы дороже (Риск потери продаж)</option>
-                <option value="cheaper">Мы дешевле (В рынке)</option>
+                <option value="all">All Deviations</option>
+                <option value="expensive">Higher than Competitors (Risk)</option>
+                <option value="cheaper">Lower than Competitors</option>
               </select>
             </div>
           </div>
@@ -1479,17 +1479,17 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Артикул / Товар</th>
-                  <th>Категория</th>
-                  <th class="our-price-col">Наша цена</th>
-                  <th>Конкурент А (TechMart)</th>
-                  <th>Конкурент Б (MegaStore)</th>
-                  <th>Конкурент В (Optima)</th>
-                  <th>Позиция</th>
+                  <th>SKU / Product</th>
+                  <th>Category</th>
+                  <th class="our-price-col">Our Price</th>
+                  <th>Competitor A (TechMart)</th>
+                  <th>Competitor B (MegaStore)</th>
+                  <th>Competitor C (Optima)</th>
+                  <th>Position</th>
                 </tr>
               </thead>
               <tbody id="comparisonTableBody">
-                <!-- Заполняется динамически через JS -->
+                <!-- Populated dynamically by JavaScript -->
               </tbody>
             </table>
           </div>
@@ -1497,17 +1497,17 @@
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 2: ТОВАРЫ (Полный каталог SKU)
+           TAB 2: PRODUCTS (Full SKU catalog)
            ========================================== -->
       <div class="tab-pane" id="tab-products">
         <section class="section-card">
           <div class="card-header">
             <div class="card-title-group">
-              <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i> Реестр отслеживаемых товаров (SKU)</h2>
-              <p>Прямые ссылки на карточки товаров конкурентов, контроль РРЦ и авто-переоценка</p>
+              <h2><i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i> Tracked Products (SKU)</h2>
+              <p>Competitor product links, recommended retail price control, and automatic repricing</p>
             </div>
-            <button class="btn btn-primary" onclick="showToast('success', 'Добавление SKU', 'В полной версии здесь открывается форма добавления ссылок или загрузки прайс-листа.')">
-              <i class="fa-solid fa-plus"></i> Добавить товары
+            <button class="btn btn-primary" onclick="showToast('success', 'Add SKU', 'The full version would open a form for adding product links or uploading a price list.')">
+              <i class="fa-solid fa-plus"></i> Add Products
             </button>
           </div>
           <div class="table-responsive">
@@ -1515,12 +1515,12 @@
               <thead>
                 <tr>
                   <th>SKU ID</th>
-                  <th>Наименование</th>
-                  <th>РРЦ (МРЦ)</th>
-                  <th>Наша цена</th>
-                  <th>Мин. цена рынка</th>
-                  <th>Ссылки привязки</th>
-                  <th>Статус РРЦ</th>
+                  <th>Product Name</th>
+                  <th>RRP (Minimum Price)</th>
+                  <th>Our Price</th>
+                  <th>Lowest Market Price</th>
+                  <th>Linked Sources</th>
+                  <th>RRP Status</th>
                 </tr>
               </thead>
               <tbody id="fullProductsTableBody"></tbody>
@@ -1530,7 +1530,7 @@
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 3: КОНКУРЕНТЫ (Статус парсеров)
+           TAB 3: COMPETITORS (Scraper status)
            ========================================== -->
       <div class="tab-pane" id="tab-competitors">
         <div class="grid-2" id="competitorsGrid">
@@ -1538,15 +1538,15 @@
             <div class="comp-header">
               <div>
                 <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> TechMart (techmart-shop.example)</div>
-                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Playwright + Stealth Proxy • Защита: Cloudflare Turnstile</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">Engine: Playwright + Stealth Proxy • Protection: Cloudflare Turnstile</span>
               </div>
-              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Active</span>
             </div>
             <div class="comp-stats">
-              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,428 SKU</strong></div>
-              <div class="comp-stat-item"><span>Успешность запросов</span><strong>99.8%</strong></div>
-              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>340 мс</strong></div>
-              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждые 2 часа</strong></div>
+              <div class="comp-stat-item"><span>Linked Products</span><strong>1,428 SKU</strong></div>
+              <div class="comp-stat-item"><span>Request Success Rate</span><strong>99.8%</strong></div>
+              <div class="comp-stat-item"><span>Average Response Time</span><strong>340 ms</strong></div>
+              <div class="comp-stat-item"><span>Check Frequency</span><strong>Every 2 hours</strong></div>
             </div>
           </div>
 
@@ -1554,15 +1554,15 @@
             <div class="comp-header">
               <div>
                 <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> MegaStore (megastore-retail.example)</div>
-                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Async HTTPX + JSON API • Защита: Rate-Limiter</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">Engine: Async HTTPX + JSON API • Protection: Rate Limiter</span>
               </div>
-              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Active</span>
             </div>
             <div class="comp-stats">
-              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,390 SKU</strong></div>
-              <div class="comp-stat-item"><span>Успешность запросов</span><strong>100%</strong></div>
-              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>120 мс</strong></div>
-              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждый час</strong></div>
+              <div class="comp-stat-item"><span>Linked Products</span><strong>1,390 SKU</strong></div>
+              <div class="comp-stat-item"><span>Request Success Rate</span><strong>100%</strong></div>
+              <div class="comp-stat-item"><span>Average Response Time</span><strong>120 ms</strong></div>
+              <div class="comp-stat-item"><span>Check Frequency</span><strong>Hourly</strong></div>
             </div>
           </div>
 
@@ -1570,73 +1570,73 @@
             <div class="comp-header">
               <div>
                 <div class="comp-domain"><i class="fa-solid fa-globe" style="color: var(--primary);"></i> Optima (optima-trade.example)</div>
-                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Python Scrapy + Residential Proxies • Защита: Qrator</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">Engine: Python Scrapy + Residential Proxies • Protection: Qrator</span>
               </div>
-              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Активен</span>
+              <span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Active</span>
             </div>
             <div class="comp-stats">
-              <div class="comp-stat-item"><span>Связано товаров</span><strong>1,180 SKU</strong></div>
-              <div class="comp-stat-item"><span>Успешность запросов</span><strong>98.9%</strong></div>
-              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>490 мс</strong></div>
-              <div class="comp-stat-item"><span>Частота обхода</span><strong>Каждые 3 часа</strong></div>
+              <div class="comp-stat-item"><span>Linked Products</span><strong>1,180 SKU</strong></div>
+              <div class="comp-stat-item"><span>Request Success Rate</span><strong>98.9%</strong></div>
+              <div class="comp-stat-item"><span>Average Response Time</span><strong>490 ms</strong></div>
+              <div class="comp-stat-item"><span>Check Frequency</span><strong>Every 3 hours</strong></div>
             </div>
           </div>
 
           <div class="competitor-card">
             <div class="comp-header">
               <div>
-                <div class="comp-domain"><i class="fa-solid fa-store" style="color: var(--warning);"></i> Маркетплейсы (Ozon / WB / Kaspi API)</div>
-                <span style="font-size: 12px; color: var(--text-secondary);">Движок: Гибридный парсер витрины + СПП • Мультирегиональность</span>
+                <div class="comp-domain"><i class="fa-solid fa-store" style="color: var(--warning);"></i> Marketplaces (Ozon / WB / Kaspi API)</div>
+                <span style="font-size: 12px; color: var(--text-secondary);">Engine: Hybrid Storefront Scraper + Promotions • Multi-region</span>
               </div>
-              <span class="status-pill status-watch"><i class="fa-solid fa-bolt"></i> В очереди</span>
+              <span class="status-pill status-watch"><i class="fa-solid fa-bolt"></i> Queued</span>
             </div>
             <div class="comp-stats">
-              <div class="comp-stat-item"><span>Связано товаров</span><strong>950 SKU</strong></div>
-              <div class="comp-stat-item"><span>Успешность запросов</span><strong>99.4%</strong></div>
-              <div class="comp-stat-item"><span>Среднее время ответа</span><strong>410 мс</strong></div>
-              <div class="comp-stat-item"><span>Локация парсинга</span><strong>Москва / Алматы</strong></div>
+              <div class="comp-stat-item"><span>Linked Products</span><strong>950 SKU</strong></div>
+              <div class="comp-stat-item"><span>Request Success Rate</span><strong>99.4%</strong></div>
+              <div class="comp-stat-item"><span>Average Response Time</span><strong>410 ms</strong></div>
+              <div class="comp-stat-item"><span>Scraping Region</span><strong>Moscow / Almaty</strong></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 4: EXCEL-ОТЧЕТЫ
+           TAB 4: EXCEL REPORTS
            ========================================== -->
       <div class="tab-pane" id="tab-reports">
         <div class="grid-2">
           <div class="section-card" style="margin-bottom: 0;">
             <div class="card-header">
               <div class="card-title-group">
-                <h2><i class="fa-solid fa-file-excel" style="color: #059669;"></i> Конструктор автоматических Excel-выгрузок</h2>
-                <p>Формирование готовых таблиц `.xlsx` с условным форматированием и формулами</p>
+                <h2><i class="fa-solid fa-file-excel" style="color: #059669;"></i> Automated Excel Export Builder</h2>
+                <p>Generate formatted `.xlsx` spreadsheets with conditional formatting and formulas</p>
               </div>
             </div>
             <div style="padding: 20px 24px;">
               <div class="switch-row">
                 <div>
-                  <strong>Цветовая заливка отклонений (Heatmap)</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Автоматически красить ячейки с демпингом в красный/зеленый в Excel</div>
+                  <strong>Deviation Color Coding (Heatmap)</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Highlight price undercuts in red/green in Excel</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div class="switch-row">
                 <div>
-                  <strong>Лист «Сводная аналитика по брендам»</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Добавлять вторую вкладку с Pivot-таблицей и графиками</div>
+                  <strong>Brand Summary Analytics Sheet</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Add a second worksheet with a pivot table and charts</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div class="switch-row">
                 <div>
-                  <strong>Прямые гиперссылки на товары конкурентов</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Кликабельные цены в ячейках для быстрой проверки менеджером</div>
+                  <strong>Direct Links to Competitor Products</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Clickable prices for quick checks by managers</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div style="margin-top: 20px;">
                 <button class="btn btn-excel" onclick="exportToCSV()">
-                  <i class="fa-solid fa-download"></i> Сгенерировать и скачать отчет сейчас
+                  <i class="fa-solid fa-download"></i> Generate and Download Report Now
                 </button>
               </div>
             </div>
@@ -1645,38 +1645,38 @@
           <div class="section-card" style="margin-bottom: 0;">
             <div class="card-header">
               <div class="card-title-group">
-                <h2><i class="fa-solid fa-clock-rotate-left"></i> Архив сформированных отчетов</h2>
-                <p>Ежедневная авто-генерация по расписанию (08:30 МСК)</p>
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Generated Report Archive</h2>
+                <p>Daily scheduled generation (08:30 Moscow time)</p>
               </div>
             </div>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Файл отчета</th>
+                    <th>Report File</th>
                     <th>SKU</th>
-                    <th>Размер</th>
-                    <th>Действие</th>
+                    <th>Size</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>MarketPulse_Full_Report_Today.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Сегодня, 08:30</span></td>
+                    <td><strong>MarketPulse_Full_Report_Today.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Today, 08:30</span></td>
                     <td class="price-val">1,428</td>
                     <td>842 KB</td>
-                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Download</button></td>
                   </tr>
                   <tr>
-                    <td><strong>Dumping_Violations_RRP.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Сегодня, 08:31</span></td>
+                    <td><strong>Dumping_Violations_RRP.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Today, 08:31</span></td>
                     <td class="price-val">24</td>
                     <td>118 KB</td>
-                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Download</button></td>
                   </tr>
                   <tr>
-                    <td><strong>MarketPulse_Weekly_Digest.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Понедельник, 09:00</span></td>
+                    <td><strong>MarketPulse_Weekly_Digest.xlsx</strong><br><span style="font-size: 11px; color: var(--text-muted);">Monday, 09:00</span></td>
                     <td class="price-val">1,428</td>
                     <td>2.4 MB</td>
-                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Скачать</button></td>
+                    <td><button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="exportToCSV()"><i class="fa-solid fa-download"></i> Download</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -1686,42 +1686,42 @@
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 5: TELEGRAM-АЛЕРТЫ
+           TAB 5: TELEGRAM ALERTS
            ========================================== -->
       <div class="tab-pane" id="tab-alerts">
         <div class="grid-2">
           <div class="section-card" style="margin-bottom: 0;">
             <div class="card-header">
               <div class="card-title-group">
-                <h2><i class="fa-solid fa-bell" style="color: var(--primary);"></i> Правила срабатывания Telegram-уведомлений</h2>
-                <p>Настройка триггеров для бота и рабочих групп отдела продаж</p>
+                <h2><i class="fa-solid fa-bell" style="color: var(--primary);"></i> Telegram Alert Rules</h2>
+                <p>Configure triggers for the bot and sales team channels</p>
               </div>
             </div>
             <div style="padding: 20px 24px;">
               <div class="switch-row">
                 <div>
-                  <strong>Снижение цены конкурента более чем на 5%</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Присылать срочный алерт при резком демпинге</div>
+                  <strong>Competitor Price Drops by More Than 5%</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Send urgent alerts when competitors sharply reduce prices</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div class="switch-row">
                 <div>
-                  <strong>Нарушение РРЦ / МРЦ дилерами</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Фиксация даты, скриншота страницы и прямой ссылки</div>
+                  <strong>Dealer RRP / Minimum Price Violations</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Record the date, page screenshot, and direct link</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div class="switch-row">
                 <div>
-                  <strong>Товар закончился у конкурента (Out of Stock)</strong>
-                  <div style="font-size: 12px; color: var(--text-secondary);">Сигнал для безопасного повышения вашей маржинальности</div>
+                  <strong>Competitor Product Out of Stock</strong>
+                  <div style="font-size: 12px; color: var(--text-secondary);">Signal an opportunity to improve margins</div>
                 </div>
                 <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
               </div>
               <div style="margin-top: 18px;">
-                <button class="btn btn-primary" onclick="showToast('info', 'Тестовый алерт отправлен', 'Бот @MarketPulse_AlertBot отправил тестовую сводку в Telegram-чат.')">
-                  <i class="fa-brands fa-telegram"></i> Отправить тестовое уведомление
+                <button class="btn btn-primary" onclick="showToast('info', 'Test Alert Preview', 'A sample Telegram alert is displayed in this demo; no message is sent.')">
+                  <i class="fa-brands fa-telegram"></i> Send Test Notification
                 </button>
               </div>
             </div>
@@ -1730,8 +1730,8 @@
           <div class="section-card" style="margin-bottom: 0;">
             <div class="card-header">
               <div class="card-title-group">
-                <h2><i class="fa-brands fa-telegram" style="color: #0284c7;"></i> Пример сообщения в Telegram-чате</h2>
-                <p>Как выглядят автоматические уведомления для вашей команды</p>
+                <h2><i class="fa-brands fa-telegram" style="color: #0284c7;"></i> Sample Telegram Message</h2>
+                <p>Preview of automated notifications for your team</p>
               </div>
             </div>
             <div style="padding: 20px 24px;">
@@ -1741,15 +1741,15 @@
                     <span><i class="fa-solid fa-robot"></i> MarketPulse Alert Bot</span>
                     <span style="font-size: 11px; color: #94a3b8;">14:28</span>
                   </div>
-                  <div>🚨 <strong>Обнаружен демпинг цены (-8.4%)</strong></div>
+                  <div>🚨 <strong>Price Undercut Detected (-8.4%)</strong></div>
                   <div style="margin: 8px 0;">
-                    📦 Товар: <strong>Apple iPhone 16 Pro 256GB Black</strong><br>
-                    🏷 Артикул: <span class="tg-code">MP-1042</span><br>
-                    💼 Наша цена: <span class="tg-code">114 990 ₽</span><br>
-                    📉 Конкурент А (TechMart): <span class="tg-code">105 300 ₽</span> (-9 690 ₽)
+                    📦 Product: <strong>Apple iPhone 16 Pro 256GB Black</strong><br>
+                    🏷 SKU: <span class="tg-code">MP-1042</span><br>
+                    💼 Our Price: <span class="tg-code">114 990 ₽</span><br>
+                    📉 Competitor A (TechMart): <span class="tg-code">105 300 ₽</span> (-9 690 ₽)
                   </div>
                   <div style="font-size: 11.5px; color: #93c5fd;">
-                    🔗 [Открыть карточку конкурента] • 📊 [Скачать Excel-срез]
+                    🔗 [Open Competitor Product] • 📊 [Download Excel Snapshot]
                   </div>
                 </div>
               </div>
@@ -1759,42 +1759,42 @@
       </div>
 
       <!-- ==========================================
-           ВКЛАДКА 6: НАСТРОЙКИ
+           TAB 6: SETTINGS
            ========================================== -->
       <div class="tab-pane" id="tab-settings">
         <div class="section-card">
           <div class="card-header">
             <div class="card-title-group">
-              <h2><i class="fa-solid fa-sliders" style="color: var(--primary);"></i> Конфигурация системы и API-интеграций</h2>
-              <p>Параметры расписания парсинга, прокси-ротации и синхронизации с 1С / МойСклад / CRM</p>
+              <h2><i class="fa-solid fa-sliders" style="color: var(--primary);"></i> System Configuration and API Integrations</h2>
+              <p>Scraping schedule, proxy rotation, and synchronization with 1C / MoySklad / CRM</p>
             </div>
           </div>
           <div style="padding: 24px; max-width: 680px;">
             <div class="form-group">
-              <label>Расписание автоматического обхода (Cron / Интервал)</label>
+              <label>Automatic Scraping Schedule (Cron / Interval)</label>
               <select class="form-control">
-                <option>Каждые 2 часа (Рекомендуется)</option>
-                <option>Каждый час (Высокая частота)</option>
-                <option>3 раза в сутки (08:00, 14:00, 20:00)</option>
+                <option>Every 2 Hours (Recommended)</option>
+                <option>Hourly (High Frequency)</option>
+                <option>3 Times a Day (08:00, 14:00, 20:00)</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Webhook URL для синхронизации с 1С / МойСклад / Bitrix24</label>
+              <label>Webhook URL for 1C / MoySklad / Bitrix24 Sync</label>
               <input type="text" class="form-control" value="https://erp.company.local/api/v1/price-webhook" readonly />
             </div>
             <div class="form-group">
-              <label>Telegram Chat ID для отправки отчетов</label>
-              <input type="text" class="form-control" value="-1001948275102 (Отдел ценообразования)" readonly />
+              <label>Telegram Chat ID for Report Delivery</label>
+              <input type="text" class="form-control" value="-1001948275102 (Pricing Department)" readonly />
             </div>
-            <button class="btn btn-primary" onclick="showToast('success', 'Настройки сохранены', 'Конфигурация расписания парсеров успешно обновлена.')">
-              <i class="fa-solid fa-floppy-disk"></i> Сохранить параметры
+            <button class="btn btn-primary" onclick="showToast('success', 'Settings Saved', 'Scraper schedule configuration was updated in the demo.')">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
             </button>
           </div>
         </div>
       </div>
 
       <!-- ==========================================
-           6. ОБЯЗАТЕЛЬНЫЙ ДИСКЛЕЙМЕР И CALL-TO-ACTION
+           6. REQUIRED DISCLAIMER AND CALL TO ACTION
            ========================================== -->
       <footer class="cta-banner">
         <div class="cta-content">
@@ -1802,18 +1802,14 @@
             <i class="fa-solid fa-code"></i> Custom Python Scraping &amp; Automation Solutions
           </div>
           <p class="cta-text">
-            <strong>Внимание:</strong> Это демонстрационный интерфейс с тестовыми данными. Реальное автоматизированное приложение для мониторинга цен и кастомные решения под задачи вашего бизнеса можно заказать, связавшись с нами.
+            <strong>Note:</strong> This is a demonstration interface with sample data. A real automated price monitoring application and tailored business solutions can be requested by contacting our team.
           </p>
         </div>
 
         <div class="cta-buttons">
           <button class="btn btn-cta-primary" onclick="openOrderModal()">
             <i class="fa-solid fa-rocket"></i>
-            <span>Заказать разработку</span>
-          </button>
-          <button class="btn btn-cta-tg" onclick="contactTelegram()">
-            <i class="fa-brands fa-telegram"></i>
-            <span>Связаться в Telegram</span>
+            <span>Order Development</span>
           </button>
         </div>
       </footer>
@@ -1821,62 +1817,62 @@
     </main>
   </div>
 
-  <!-- КОНТЕЙНЕР ДЛЯ TOAST-УВЕДОМЛЕНИЙ -->
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- МОДАЛЬНОЕ ОКНО «ЗАКАЗАТЬ РАЗРАБОТКУ» -->
+  <!-- ORDER DEVELOPMENT MODAL -->
   <div class="modal-backdrop" id="orderModal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Заказать систему мониторинга цен</h3>
+        <h3>Order a Price Monitoring System</h3>
         <button class="close-modal" onclick="closeOrderModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
-        Разработаем кастомный парсер любой сложности (обход Cloudflare, авторизация, выбор городов), настроим выгрузку в Excel/Google Таблицы, интеграцию с 1С и Telegram-бота под ваши бизнес-процессы.
+        We build custom scrapers for varied scenarios (Cloudflare challenges, authentication, regional targeting) and configure Excel/Google Sheets exports, 1C integrations, and Telegram bots for your workflows.
       </p>
       <form onsubmit="submitOrderForm(event)">
         <div class="form-group">
-          <label>Ваше имя или компания</label>
-          <input type="text" class="form-control" placeholder="Например: Алексей, ООО ТехноТрейд" required />
+          <label>Your Name or Company</label>
+          <input type="text" class="form-control" placeholder="For example: Alex, TechTrade Ltd." required />
         </div>
         <div class="form-group">
-          <label>Ваш контакт (Telegram / WhatsApp / Email)</label>
-          <input type="text" class="form-control" placeholder="@username или +7 (999) 000-00-00" required />
+          <label>Your Contact (Telegram / WhatsApp / Email)</label>
+          <input type="text" class="form-control" placeholder="@username or +1 (555) 000-0000" required />
         </div>
         <div class="form-group">
-          <label>Краткое описание задачи (сайты-доноры, кол-во товаров)</label>
-          <textarea class="form-control" rows="3" placeholder="Нужно мониторить 5 сайтов конкурентов (~2000 товаров) и формировать ежедневный Excel-отчет..."></textarea>
+          <label>Brief Project Description (Source Sites, Number of Products)</label>
+          <textarea class="form-control" rows="3" placeholder="Monitor 5 competitors (~2,000 products) and create a daily Excel report..."></textarea>
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
-          <button type="button" class="btn btn-outline" onclick="closeOrderModal()">Отмена</button>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Отправить запрос</button>
+          <button type="button" class="btn btn-outline" onclick="closeOrderModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Request</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ==========================================
-       JAVASCRIPT ЛОГИКА (ES6+)
+       JAVASCRIPT LOGIC (ES6+)
        ========================================== -->
   <script>
-    // 1. Тестовый набор данных (Товары и цены конкурентов)
+    // 1. Sample dataset (Products and competitor prices)
     const productsData = [
       {
         sku: 'MP-1042',
         name: 'Apple iPhone 16 Pro 256GB Black Titanium',
         category: 'smartphones',
-        categoryLabel: 'Смартфоны',
+        categoryLabel: 'Smartphones',
         rrp: 115990,
         ourPrice: 114990,
-        compA: 109990, // Конкурент дешевле -> мы дороже (красный)
-        compB: 116500, // Конкурент дороже -> мы дешевле (зеленый)
+        compA: 109990, // Competitor is cheaper; our price is higher (red)
+        compB: 116500, // Competitor is more expensive; our price is lower (green)
         compC: 114990
       },
       {
         sku: 'MP-1089',
         name: 'Samsung Galaxy S24 Ultra 12/512GB Titanium Gray',
         category: 'smartphones',
-        categoryLabel: 'Смартфоны',
+        categoryLabel: 'Smartphones',
         rrp: 109990,
         ourPrice: 104500,
         compA: 108900,
@@ -1885,9 +1881,9 @@
       },
       {
         sku: 'MP-2015',
-        name: 'Ноутбук Apple MacBook Air 15" M3 (16/512GB) Space Gray',
+        name: 'Apple MacBook Air 15" M3 Laptop (16/512GB) Space Gray',
         category: 'laptops',
-        categoryLabel: 'Ноутбуки',
+        categoryLabel: 'Laptops',
         rrp: 154990,
         ourPrice: 149900,
         compA: 152400,
@@ -1896,9 +1892,9 @@
       },
       {
         sku: 'MP-2048',
-        name: 'Ноутбук Lenovo Legion Pro 5 16IRX9 (i7-14700HX / RTX 4070)',
+        name: 'Lenovo Legion Pro 5 Laptop 16IRX9 (i7-14700HX / RTX 4070)',
         category: 'laptops',
-        categoryLabel: 'Ноутбуки',
+        categoryLabel: 'Laptops',
         rrp: 189990,
         ourPrice: 182000,
         compA: 186500,
@@ -1907,9 +1903,9 @@
       },
       {
         sku: 'MP-3011',
-        name: 'Видеокарта ASUS TUF Gaming GeForce RTX 4070 Ti SUPER 16GB',
+        name: 'ASUS TUF Gaming GeForce RTX 4070 Ti SUPER 16GB Graphics Card',
         category: 'components',
-        categoryLabel: 'Комплектующие',
+        categoryLabel: 'Components',
         rrp: 98990,
         ourPrice: 96500,
         compA: 92400,
@@ -1918,9 +1914,9 @@
       },
       {
         sku: 'MP-3074',
-        name: 'Процессор AMD Ryzen 7 7800X3D OEM',
+        name: 'AMD Ryzen 7 7800X3D OEM Processor',
         category: 'components',
-        categoryLabel: 'Комплектующие',
+        categoryLabel: 'Components',
         rrp: 44990,
         ourPrice: 41900,
         compA: 43500,
@@ -1931,7 +1927,7 @@
         sku: 'MP-1104',
         name: 'Xiaomi 14T Pro 12/512GB Titan Black',
         category: 'smartphones',
-        categoryLabel: 'Смартфоны',
+        categoryLabel: 'Smartphones',
         rrp: 69990,
         ourPrice: 67900,
         compA: 64990,
@@ -1940,9 +1936,9 @@
       },
       {
         sku: 'MP-3099',
-        name: 'SSD Накопитель Samsung 990 PRO 2TB NVMe M.2',
+        name: 'Samsung 990 PRO 2TB NVMe M.2 SSD',
         category: 'components',
-        categoryLabel: 'Комплектующие',
+        categoryLabel: 'Components',
         rrp: 21990,
         ourPrice: 19400,
         compA: 20500,
@@ -1951,7 +1947,7 @@
       }
     ];
 
-    // 2. Данные для графика по категориям и периодам
+    // 2. Chart data by category and date range
     const chartDataSets = {
       all: {
         kpiSku: '1,428', kpiDrops: '24', kpiAlerts: '5', kpiMargin: '18.5%',
@@ -1987,14 +1983,14 @@
     let currentPeriodDays = 7;
     let priceChart = null;
 
-    // Форматирование валюты
+    // Currency formatting
     function formatRub(val) {
       return new Intl.NumberFormat('ru-RU').format(val) + ' ₽';
     }
 
-    // Расчет бейджа отклонения нашей цены относительно конкурента
-    // Если наша цена < цены конкурента -> мы дешевле (выгодно нам -> зеленый бейдж)
-    // Если наша цена > цены конкурента -> мы дороже (конкурент демпингует -> красный бейдж)
+    // Calculate the price difference badge relative to a competitor
+    // If our price < competitor price, we are cheaper (green badge)
+    // If our price > competitor price, we are more expensive (red badge)
     function renderPriceCell(ourPrice, compPrice) {
       const diffPct = ((ourPrice - compPrice) / compPrice) * 100;
       const absPct = Math.abs(diffPct).toFixed(1);
@@ -2003,9 +1999,9 @@
       if (Math.abs(diffPct) < 0.15) {
         badgeHtml = `<span class="diff-badge diff-equal">0.0%</span>`;
       } else if (ourPrice < compPrice) {
-        badgeHtml = `<span class="diff-badge diff-favorable" title="Наша цена дешевле конкурента на ${absPct}%"><i class="fa-solid fa-arrow-down"></i> -${absPct}%</span>`;
+        badgeHtml = `<span class="diff-badge diff-favorable" title="Our price is ${absPct}% below the competitor"><i class="fa-solid fa-arrow-down"></i> -${absPct}%</span>`;
       } else {
-        badgeHtml = `<span class="diff-badge diff-expensive" title="Наша цена дороже конкурента на ${absPct}%"><i class="fa-solid fa-arrow-up"></i> +${absPct}%</span>`;
+        badgeHtml = `<span class="diff-badge diff-expensive" title="Our price is ${absPct}% above the competitor"><i class="fa-solid fa-arrow-up"></i> +${absPct}%</span>`;
       }
 
       return `
@@ -2016,7 +2012,7 @@
       `;
     }
 
-    // 3. Отрисовка основной таблицы сравнения
+    // 3. Render the main price comparison table
     function renderComparisonTable() {
       const tbody = document.getElementById('comparisonTableBody');
       const searchQuery = document.getElementById('tableSearchInput').value.trim().toLowerCase();
@@ -2040,7 +2036,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="7" style="text-align: center; padding: 32px; color: var(--text-muted);">
-              По выбранным фильтрам товары не найдены. Попробуйте сбросить параметры поиска.
+              No products match the selected filters. Try resetting the search criteria.
             </td>
           </tr>
         `;
@@ -2052,11 +2048,11 @@
         let statusHtml = '';
 
         if (item.ourPrice <= minComp) {
-          statusHtml = `<span class="status-pill status-optimal"><i class="fa-solid fa-circle-check"></i> Лучшая цена</span>`;
+          statusHtml = `<span class="status-pill status-optimal"><i class="fa-solid fa-circle-check"></i> Best Price</span>`;
         } else if ((item.ourPrice - minComp) / minComp > 0.03) {
-          statusHtml = `<span class="status-pill status-risk"><i class="fa-solid fa-triangle-exclamation"></i> Демпинг конкурента</span>`;
+          statusHtml = `<span class="status-pill status-risk"><i class="fa-solid fa-triangle-exclamation"></i> Competitor Undercut</span>`;
         } else {
-          statusHtml = `<span class="status-pill status-watch"><i class="fa-solid fa-eye"></i> В пределах нормы</span>`;
+          statusHtml = `<span class="status-pill status-watch"><i class="fa-solid fa-eye"></i> Within Range</span>`;
         }
 
         return `
@@ -2064,7 +2060,7 @@
             <td>
               <div class="sku-cell">
                 <span class="product-name">${item.name}</span>
-                <span class="product-meta">SKU: ${item.sku} • РРЦ: ${formatRub(item.rrp)}</span>
+                <span class="product-meta">SKU: ${item.sku} • RRP: ${formatRub(item.rrp)}</span>
               </div>
             </td>
             <td><span class="pill-btn" style="cursor: default; padding: 3px 9px; font-size: 11.5px;">${item.categoryLabel}</span></td>
@@ -2078,7 +2074,7 @@
       }).join('');
     }
 
-    // Отрисовка расширенной таблицы во вкладке «Товары»
+    // Render expanded product table on the Products tab
     function renderFullProductsTable() {
       const tbody = document.getElementById('fullProductsTableBody');
       tbody.innerHTML = productsData.map(item => {
@@ -2091,18 +2087,18 @@
             <td class="price-val">${formatRub(item.rrp)}</td>
             <td class="price-val" style="color: var(--primary);">${formatRub(item.ourPrice)}</td>
             <td class="price-val">${formatRub(minMarket)}</td>
-            <td><span style="font-size: 12px; color: var(--text-secondary);"><i class="fa-solid fa-link"></i> 3 магазина привязано</span></td>
+            <td><span style="font-size: 12px; color: var(--text-secondary);"><i class="fa-solid fa-link"></i> 3 linked stores</span></td>
             <td>
               ${rrpViolation
-                ? '<span class="status-pill status-risk"><i class="fa-solid fa-ban"></i> Нарушение РРЦ</span>'
-                : '<span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Соблюдается</span>'}
+                ? '<span class="status-pill status-risk"><i class="fa-solid fa-ban"></i> RRP Violation</span>'
+                : '<span class="status-pill status-optimal"><i class="fa-solid fa-check"></i> Compliant</span>'}
             </td>
           </tr>
         `;
       }).join('');
     }
 
-    // 4. Инициализация и обновление графика Chart.js
+    // 4. Initialize and refresh Chart.js
     function getDateLabels(daysCount) {
       const labels = [];
       const today = new Date();
@@ -2135,7 +2131,7 @@
           labels: getDateLabels(currentPeriodDays),
           datasets: [
             {
-              label: 'Наша цена (Средняя)',
+              label: 'Our Average Price',
               data: extrapolateSeries(dataConfig.our, currentPeriodDays),
               borderColor: '#2563eb',
               backgroundColor: 'rgba(37, 99, 235, 0.08)',
@@ -2146,7 +2142,7 @@
               fill: true
             },
             {
-              label: 'Конкурент А (TechMart)',
+              label: 'Competitor A (TechMart)',
               data: extrapolateSeries(dataConfig.compA, currentPeriodDays),
               borderColor: '#ef4444',
               borderWidth: 2,
@@ -2156,7 +2152,7 @@
               fill: false
             },
             {
-              label: 'Конкурент Б (MegaStore)',
+              label: 'Competitor B (MegaStore)',
               data: extrapolateSeries(dataConfig.compB, currentPeriodDays),
               borderColor: '#10b981',
               borderWidth: 2,
@@ -2165,7 +2161,7 @@
               fill: false
             },
             {
-              label: 'Конкурент В (Optima)',
+              label: 'Competitor C (Optima)',
               data: extrapolateSeries(dataConfig.compC, currentPeriodDays),
               borderColor: '#f59e0b',
               borderWidth: 2,
@@ -2229,13 +2225,13 @@
       currentCategory = category;
       const cfg = chartDataSets[category];
 
-      // Обновляем KPI-карточки
+      // Update KPI cards
       document.getElementById('kpiTotalSku').textContent = cfg.kpiSku;
       document.getElementById('kpiPriceDrops').textContent = cfg.kpiDrops;
       document.getElementById('kpiAlerts').textContent = cfg.kpiAlerts;
       document.getElementById('kpiMargin').textContent = cfg.kpiMargin;
 
-      // Обновляем график
+      // Update chart
       if (priceChart) {
         priceChart.data.labels = getDateLabels(currentPeriodDays);
         priceChart.data.datasets[0].data = extrapolateSeries(cfg.our, currentPeriodDays);
@@ -2245,7 +2241,7 @@
         priceChart.update();
       }
 
-      // Обновляем таблицу
+      // Update table
       renderComparisonTable();
     }
 
@@ -2256,12 +2252,12 @@
       btnEl.classList.add('active');
 
       document.getElementById('chartSubtitle').textContent =
-        `Сравнение истории цен вашей компании с топ-3 конкурентами за последние ${days} дней`;
+        `Your company's price history vs. the top 3 competitors over the past ${days} days`;
 
       updateDashboardByCategory(currentCategory);
     }
 
-    // 5. Навигация по вкладкам сайдбара
+    // 5. Sidebar tab navigation
     document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
       item.addEventListener('click', () => {
         document.querySelectorAll('.sidebar-nav .nav-item').forEach(n => n.classList.remove('active'));
@@ -2273,7 +2269,7 @@
       });
     });
 
-    // Переключение категорий в тулбаре
+    // Toolbar category switching
     document.querySelectorAll('#categoryFilterBar .pill-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#categoryFilterBar .pill-btn').forEach(b => b.classList.remove('active'));
@@ -2283,12 +2279,12 @@
       });
     });
 
-    // Слушатели поиска и фильтра таблицы
+    // Table search and filter event listeners
     document.getElementById('tableSearchInput').addEventListener('input', renderComparisonTable);
     document.getElementById('deviationFilter').addEventListener('change', renderComparisonTable);
 
-    // 6. Интерактивность кнопок тулбара
-    // Импорт Excel/CSV
+    // 6. Toolbar button interactions
+    // Excel/CSV import
     document.getElementById('btnImport').addEventListener('click', () => {
       document.getElementById('hiddenFileInput').click();
     });
@@ -2296,26 +2292,26 @@
     document.getElementById('hiddenFileInput').addEventListener('change', (e) => {
       if (e.target.files.length > 0) {
         const fileName = e.target.files[0].name;
-        showToast('success', 'Прайс-лист загружен', `Файл "${fileName}" успешно обработан: распознано 1,428 артикулов.`);
+        showToast('success', 'Price List Uploaded', `File "${fileName}" processed successfully: 1,428 SKUs recognized.`);
         e.target.value = '';
       }
     });
 
-    // Запустить проверку цен (живая симуляция парсинга)
+    // Run price check (live scraping simulation)
     document.getElementById('btnRunCheck').addEventListener('click', function() {
       const btn = this;
       const originalHtml = btn.innerHTML;
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Парсинг конкурентов (0/4)...</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Checking Competitor Prices (0/4)...</span>`;
 
-      showToast('info', 'Запущен обход сайтов', 'Асинхронный сбор цен через пул резидентных прокси...');
+      showToast('info', 'Website Scan Started', 'Asynchronous collection of prices through a residential proxy pool...');
 
       setTimeout(() => {
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Обход Cloudflare (3/4)...</span>`;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Passing Cloudflare (3/4)...</span>`;
       }, 900);
 
       setTimeout(() => {
-        // Слегка меняем цены для наглядного эффекта живого обновления
+        // Slightly change prices to simulate live updates
         productsData.forEach(item => {
           const delta = (Math.floor(Math.random() * 5) - 2) * 150;
           item.compA = Math.max(15000, item.compA + delta);
@@ -2323,7 +2319,7 @@
 
         const now = new Date();
         const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        document.getElementById('lastSyncTime').textContent = `Сегодня, ${timeStr}`;
+        document.getElementById('lastSyncTime').textContent = `Today, ${timeStr}`;
 
         renderComparisonTable();
         renderFullProductsTable();
@@ -2331,19 +2327,19 @@
 
         btn.disabled = false;
         btn.innerHTML = originalHtml;
-        showToast('success', 'Мониторинг завершен!', 'Обновлено 1,428 SKU. Обнаружено 2 новых снижения цены у TechMart.');
+        showToast('success', 'Monitoring Complete!', 'Updated 1,428 SKUs. Found 2 new price drops at TechMart.');
       }, 1900);
     });
 
-    // Экспорт в Excel (реальная генерация CSV с UTF-8 BOM для открытия в MS Excel)
+    // Excel export (actually generates UTF-8 BOM CSV for Microsoft Excel)
     function exportToCSV() {
       const btn = document.getElementById('btnExport');
       const originalHtml = btn.innerHTML;
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Формирование .CSV...</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Generating .CSV...</span>`;
 
       setTimeout(() => {
-        const headers = ['SKU', 'Наименование', 'Категория', 'РРЦ (руб)', 'Наша цена (руб)', 'TechMart (руб)', 'MegaStore (руб)', 'Optima (руб)'];
+        const headers = ['SKU', 'Product Name', 'Category', 'RRP (RUB)', 'Our Price (RUB)', 'TechMart (RUB)', 'MegaStore (RUB)', 'Optima (RUB)'];
         const rows = productsData.map(p => [
           p.sku,
           `"${p.name.replace(/"/g, '""')}"`,
@@ -2369,13 +2365,13 @@
 
         btn.disabled = false;
         btn.innerHTML = originalHtml;
-        showToast('success', 'Отчет успешно выгружен', 'Файл совместим с Microsoft Excel и содержит актуальную матрицу цен.');
+        showToast('success', 'Report Exported', 'File is compatible with Microsoft Excel and includes the current price comparison matrix.');
       }, 600);
     }
 
     document.getElementById('btnExport').addEventListener('click', exportToCSV);
 
-    // 7. Всплывающие уведомления (Toasts)
+    // 7. Toast notifications
     function showToast(type, title, message) {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
@@ -2403,7 +2399,7 @@
       }, 4200);
     }
 
-    // 8. Модальное окно заказа и CTA кнопки
+    // 8. Order modal and CTA buttons
     function openOrderModal() {
       document.getElementById('orderModal').classList.add('open');
     }
@@ -2415,21 +2411,21 @@
     function submitOrderForm(e) {
       e.preventDefault();
       closeOrderModal();
-      showToast('success', 'Заявка отправлена!', 'Мы свяжемся с вами в ближайшее время для обсуждения архитектуры парсера.');
+      showToast('success', 'Request Sent!', 'We will reach out to you shortly to discuss scraper architecture.');
       e.target.reset();
     }
 
     function contactTelegram() {
-      showToast('info', 'Переход в Telegram', 'В реальном портфолио здесь можно указать прямую ссылку https://t.me/ваш_никнейм.');
+      showToast('info', 'Open Telegram', 'A real portfolio could link to https://t.me/your_username here.');
       openOrderModal();
     }
 
-    // Закрытие модалки по клику на фон
+    // Close modal by clicking outside
     document.getElementById('orderModal').addEventListener('click', (e) => {
       if (e.target.id === 'orderModal') closeOrderModal();
     });
 
-    // Инициализация при старте
+    // Initialize after page load
     window.addEventListener('DOMContentLoaded', () => {
       renderComparisonTable();
       renderFullProductsTable();
